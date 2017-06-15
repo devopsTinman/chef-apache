@@ -2,7 +2,8 @@ package 'httpd' do
 	action :install
 end
 
-file '/var/www/index.html' do
+file '/var/www/html/index.html' do
+	content '<html><head>Hello World</head><body>Hello World</body></html>'
 	action :create
 	owner 'root'
 	mode '0655'
@@ -10,5 +11,5 @@ file '/var/www/index.html' do
 end
 
 service 'httpd' do
-	action :start
+	action [ :enable, :start ]
 end
