@@ -3,7 +3,7 @@ package 'httpd' do
 end
 
 file '/var/www/html/index.html' do
-	content '<html><head>Hello World</head><body>Hello World</body></html>'
+	content "<html><head>Hello World</head><body>Hello World! <br>IPAddress: #{node['ipaddress']}<br>Hostname: #{node['hostname']}</body></html>"
 	action :create
 	owner 'root'
 	mode '0655'
