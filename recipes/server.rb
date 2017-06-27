@@ -2,8 +2,8 @@ package 'httpd' do
 	action :install
 end
 
-file '/var/www/html/index.html' do
-	content "<html><head>Hello World</head><body>Hello World! <br>IPAddress: #{node['ipaddress']}<br>Hostname: #{node['hostname']}</body></html>"
+template '/var/www/html/index.html' do
+	source 'index.html.erb'
 	action :create
 	owner 'root'
 	mode '0655'
