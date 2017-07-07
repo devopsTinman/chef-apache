@@ -2,14 +2,6 @@ package 'httpd' do
 	action :install
 end
 
-cookbook_file 'var/www/html/home.html' do
-	source 'home.html'
-end
-
-remote_file '/var/www/html/robin.png' do
-	source 'http://www.technotrainer.com/wp-content/uploads/2016/11/Robin_Beck.png'
-end
-
 template '/var/www/html/index.html' do
 	source 'index.html.erb'
 	action :create
@@ -18,6 +10,34 @@ template '/var/www/html/index.html' do
 	group 'root'
 end
 
+bash "inline script" do
+	user "root"
+	code "mkdir -p /var/www/mysites/ && chown -R apache /var/www/mysites"
+#	not_if '[ -d /var/www/mysites/ ]'
+	not_if do
+		File.directory?('/var/www/mysites')
+	end
+end
+
+execute "run a script" do
+	user "root"
+	command <<-EOH
+	mkdir -p /var/www/mysites/ /
+	chown -R apache /var/www/mysites/
+	EOH
+	not_if
+end
+
+execute "run script" do
+	user "root"
+	command './myscript.sh'
+	not_if
+end
+
+directory "/var/www/mysites" do
+	owner 'apache'
+	recursive true
+end
 
 service 'httpd' do
 	action [ :enable, :start ]
